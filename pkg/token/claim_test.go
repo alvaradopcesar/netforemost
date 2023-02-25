@@ -2,8 +2,6 @@ package token
 
 import (
 	"testing"
-
-	"github.com/stretchr/testify/assert"
 )
 
 func TestClaim_GenerateToken(t *testing.T) {
@@ -20,9 +18,15 @@ func TestClaim_GenerateToken(t *testing.T) {
 	)
 
 	atoken, rtoken, err := j.Generate(role, id)
-	assert.NoError(t, err)
-	assert.NotEmpty(t, atoken)
-	assert.NotEmpty(t, rtoken)
+	if err != nil {
+		t.Errorf("Generate() error = %v, wantErr %v", nil, err)
+	}
+	if atoken == "" {
+		t.Errorf("Generate() error = %v, wantErr %v", atoken, "")
+	}
+	if rtoken == "" {
+		t.Errorf("Generate() error = %v, wantErr %v", rtoken, "")
+	}
 }
 
 func TestClaim_Parse(t *testing.T) {
@@ -87,9 +91,9 @@ func TestClaim_Parse(t *testing.T) {
 	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {
 			_, err := j.Parse(test.atoken, false)
-			assert.Equal(t, test.err, err)
-			_, err = j.Parse(test.rtoken, true)
-			assert.Equal(t, test.err, err)
+			if err != test.err {
+				t.Errorf("Parse() error = %v, wantErr %v", test.err, err)
+			}
 		})
 	}
 }

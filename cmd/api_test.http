@@ -20,5 +20,16 @@ Content-Type: application/json
 }
 
 ###
+POST localhost:8080/v1/nota
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJjb3JlIiwiZXhwIjoxNjM3ODcwNjY4LCJpYXQiOjE2Mzc4NTk4NjgsImlzcyI6Ik9yeXgiLCJzdWIiOiI3MThmYmM3MS1jN2I2LTQ0ZmYtYTdhMC02Njk5YWZjYjEzODgiLCJyb2xlIjoiTWFuYWdlciJ9.X3c8w_VpdkdtPVpfP1KIMHhElSOZHgy4_vBB7brFCb4eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJmYjQ5ODhkNS0zY2VlLTRiYjUtOTUxYy04YzNhZTQyMTc5MzciLCJleHAiOjE3NTExMTIzMjEsImlhdCI6MTYyMjQzMDA5OCwiaXNzIjoiUHJldHR5VGVjaG5pY2FsIn0.vTeDHXVMueXhqxTwug22IPGV4Lu2dNhvw_oK4DuCKLg
+Content-Type: application/json
+
+{
+  "titulo" : "ttt",
+  "cuerpo" : "ccc",
+  "fecha" : "ddd"
+}
+
+###
 GET localhost:8080/v1/nota&order=id
 
