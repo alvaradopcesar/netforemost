@@ -51,6 +51,18 @@ func (h *Handler) NoteCreateHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h *Handler) NoteGetAllHandler(w http.ResponseWriter, r *http.Request) {
+	sort := r.URL.Query().Get("sort")
+	finalSort := "id"
+	if sort == "id" || sort == "titulo" || sort == "fecha" || sort == "cuerpo" {
+		finalSort = sort
+	}
+	resp, err := h.service.NotaGetAll(finalSort)
+	if err != nil {
+		h.log.Error(err)
+		_ = response.HTTPError(w, r, http.StatusUnprocessableEntity, ErrCreatingNote.Error())
+	}
+	defer r.Body.Close()
+	_ = response.JSON(w, r, http.StatusOK, resp)
 
 }
 

@@ -2,6 +2,8 @@ package repository
 
 import (
 	"encoding/json"
+	"reflect"
+	"sort"
 	"strconv"
 
 	"netforemost/pkg/cache"
@@ -30,10 +32,10 @@ func New(log logger.Logger) Repository {
 }
 
 type Nota struct {
-	Id    int64
-	Title string
-	Body  string
-	Date  string
+	Id    int64  `json:"id"`
+	Title string `json:"title"`
+	Body  string `json:"body"`
+	Date  string `json:"date"`
 }
 
 func (r *repository) NotaCreate(nota Nota) (id int64, err error) {
@@ -61,6 +63,18 @@ func (r *repository) NotaGetAll(order string) (notaList []Nota, err error) {
 		}
 		notaList = append(notaList, nota)
 	}
+	sort := "id"
+	switch order {
+	case "id":
+		sort = "id"
+	case "titulo":
+		sort = "title"
+	case "cuerpo":
+		sort = "body"
+	case "fecha":
+		sort = "date"
+	}
+	sortBy(sort, notaList)
 	return notaList, err
 }
 
@@ -74,4 +88,44 @@ func (r *repository) NotaUpdate(nota Nota) (err error) {
 		return
 	}
 	return
+}
+
+func sortBy(jsonField string, arr []Nota) []Nota {
+	if len(arr) < 1 {
+		return []Nota{}
+	}
+
+	// first we find the field based on the json tag
+	valueType := reflect.TypeOf(arr[0])
+
+	var field reflect.StructField
+
+	for i := 0; i < valueType.NumField(); i++ {
+		field = valueType.Field(i)
+
+		if field.Tag.Get("json") == jsonField {
+			break
+		}
+	}
+
+	// then we sort based on the type of the field
+	sort.Slice(arr, func(i, j int) bool {
+		v1 := reflect.ValueOf(arr[i]).FieldByName(field.Name)
+		v2 := reflect.ValueOf(arr[j]).FieldByName(field.Name)
+
+		switch field.Type.Name() {
+		case "int":
+			return int(v1.Int()) < int(v2.Int())
+		case "string":
+			return v1.String() < v2.String()
+		case "bool":
+			return !v1.Bool() // return small numbers first
+		default:
+			return false // return unmodified
+		}
+	})
+
+	////fmt.Printf("\nsort by %s:\n", jsonField)
+	//prettyPrint(arr)
+	return arr
 }

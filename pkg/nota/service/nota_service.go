@@ -7,7 +7,7 @@ import (
 
 type Service interface {
 	NotaCreate(title, body, date string) (int64, error)
-	NotaGetAll(notaGetAllRequest NotaGetAllRequest) (notaGetAllResponseList []NotaGetAllResponse, err error)
+	NotaGetAll(sort string) (notaGetAllResponseList []NotaGetAllResponse, err error)
 	NotaUpdateById(id int64, title, body, date string) error
 }
 
@@ -31,9 +31,6 @@ func (s *service) NotaCreate(title, body, date string) (int64, error) {
 	})
 }
 
-type NotaGetAllRequest struct {
-}
-
 type NotaGetAllResponse struct {
 	Id    int64  `json:"id"`
 	Title string `json:"title"`
@@ -41,8 +38,8 @@ type NotaGetAllResponse struct {
 	Date  string `json:"date"`
 }
 
-func (s *service) NotaGetAll(notaGetAllRequest NotaGetAllRequest) (notaGetAllResponseList []NotaGetAllResponse, err error) {
-	notaList, err := s.repo.NotaGetAll("")
+func (s *service) NotaGetAll(sort string) (notaGetAllResponseList []NotaGetAllResponse, err error) {
+	notaList, err := s.repo.NotaGetAll(sort)
 	if err != nil {
 		return
 	}

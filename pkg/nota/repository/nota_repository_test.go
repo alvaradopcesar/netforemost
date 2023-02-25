@@ -101,9 +101,8 @@ func Test_repository_NotaGetAll(t *testing.T) {
 		wantNotaList []Nota
 		wantErr      bool
 	}{
-		// TODO: Add test cases.
 		{
-			name: "NoteGetAll1",
+			name: "NoteGetAll_id",
 			fields: fields{
 				cache:       ch,
 				log:         logger.New("test01", false),
@@ -111,26 +110,26 @@ func Test_repository_NotaGetAll(t *testing.T) {
 			},
 			argsCreate: argsCreate{
 				nota: Nota{
-					Title: "Title 01",
-					Body:  "Body 01",
-					Date:  "Data 01",
+					Title: "C Title",
+					Body:  "C Body",
+					Date:  "C Data",
 				},
 			},
 			args: args{
-				order: "xx",
+				order: "id",
 			},
 			wantNotaList: []Nota{
 				{
 					Id:    1,
-					Title: "Title 01",
-					Body:  "Body 01",
-					Date:  "Data 01",
+					Title: "C Title",
+					Body:  "C Body",
+					Date:  "C Data",
 				},
 			},
 			wantErr: false,
 		},
 		{
-			name: "NoteGetAll2",
+			name: "NoteGetAll_body",
 			fields: fields{
 				cache:       ch,
 				log:         logger.New("test01", false),
@@ -138,26 +137,65 @@ func Test_repository_NotaGetAll(t *testing.T) {
 			},
 			argsCreate: argsCreate{
 				nota: Nota{
-					Title: "Title 02",
-					Body:  "Body 02",
-					Date:  "Data 02",
+					Title: "A Title",
+					Body:  "A Body",
+					Date:  "A Data",
 				},
 			},
 			args: args{
-				order: "xx",
+				order: "body",
 			},
 			wantNotaList: []Nota{
 				{
-					Id:    1,
-					Title: "Title 01",
-					Body:  "Body 01",
-					Date:  "Data 01",
+					Id:    2,
+					Title: "A Title",
+					Body:  "A Body",
+					Date:  "A Data",
 				},
 				{
+					Id:    1,
+					Title: "C Title",
+					Body:  "C Body",
+					Date:  "C Data",
+				},
+			},
+			wantErr: false,
+		},
+		{
+			name: "NoteGetAll_title",
+			fields: fields{
+				cache:       ch,
+				log:         logger.New("test01", false),
+				incremental: key_autoincremental.New(),
+			},
+			argsCreate: argsCreate{
+				nota: Nota{
+					Title: "B Title",
+					Body:  "B Body",
+					Date:  "B Data",
+				},
+			},
+			args: args{
+				order: "title",
+			},
+			wantNotaList: []Nota{
+				{
 					Id:    2,
-					Title: "Title 02",
-					Body:  "Body 02",
-					Date:  "Data 02",
+					Title: "A Title",
+					Body:  "A Body",
+					Date:  "A Data",
+				},
+				{
+					Id:    3,
+					Title: "B Title",
+					Body:  "B Body",
+					Date:  "B Data",
+				},
+				{
+					Id:    1,
+					Title: "C Title",
+					Body:  "C Body",
+					Date:  "C Data",
 				},
 			},
 			wantErr: false,
