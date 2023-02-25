@@ -23,9 +23,9 @@ type repository struct {
 
 func New(log logger.Logger) Repository {
 	return &repository{
-		cache: cache.NewCache(),
-		log:   log,
-		//incremental: key_autoincremental.New(),
+		cache:       cache.NewCache(),
+		log:         log,
+		incremental: key_autoincremental.New(),
 	}
 }
 
