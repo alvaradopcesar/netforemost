@@ -8,7 +8,7 @@ import (
 type Service interface {
 	NotaCreate(title, body, date string) (int64, error)
 	NotaGetAll(notaGetAllRequest NotaGetAllRequest) (notaGetAllResponseList []NotaGetAllResponse, err error)
-	NotaUpdateById()
+	NotaUpdateById(id int64, title, body, date string) error
 }
 
 type service struct {
@@ -58,6 +58,11 @@ func (s *service) NotaGetAll(notaGetAllRequest NotaGetAllRequest) (notaGetAllRes
 	return
 }
 
-func (s *service) NotaUpdateById() {
-	return
+func (s *service) NotaUpdateById(id int64, title, body, date string) error {
+	return s.repo.NotaUpdate(repository.Nota{
+		Id:    id,
+		Title: title,
+		Body:  body,
+		Date:  date,
+	})
 }
