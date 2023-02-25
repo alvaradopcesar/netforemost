@@ -4,8 +4,6 @@ import (
 	"encoding/json"
 	"strconv"
 
-	//"github.com/google/uuid"
-	"log"
 	"netforemost/pkg/cache"
 	"netforemost/pkg/key_autoincremental"
 	"netforemost/pkg/logger"
@@ -55,8 +53,13 @@ func (r *repository) NotaCreate(nota Nota) (id int64, err error) {
 func (r *repository) NotaGetAll(order string) (notaList []Nota, err error) {
 
 	keys, err := r.cache.GetAllKeys()
-	for _, nota := range keys {
-		log.Println(nota)
+	for _, notaDetail := range keys {
+		nota := Nota{}
+		err = json.Unmarshal([]byte(notaDetail), &nota)
+		if err != nil {
+			return notaList, err
+		}
+		notaList = append(notaList, nota)
 	}
 	return notaList, err
 }
