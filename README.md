@@ -12,23 +12,7 @@ This project uses the **Go** programming language (Golang).
 
 [Go](https://golang.org/) at least in version 1.18
 
-### Installing
-
-
-#### Using GOPATH
-
-```bash
-go mod tidy
-
-```
-
-## Running the tests
-
-```bash
-go test ./...
-```
-
-## Deployment
+#### Installing
 
 Clone the repository
 
@@ -41,6 +25,22 @@ Enter the repository folder
 ```bash
 cd netforemost
 ```
+
+#### Using GOPATH
+
+```bash
+go mod tidy
+```
+
+## Running the tests
+
+```bash
+go test ./...
+```
+
+## Run de App
+
+
 
 Build the binary
 
